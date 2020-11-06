@@ -1,0 +1,28 @@
+.login-container {
+  .ant-card {
+    max-width: 40%;
+    margin: auto;
+    margin-top: 18%;
+    border-color: #e88c03;
+    border-width: 2px;
+
+    .ant-card-head {
+      text-align: center;
+      border-bottom: 1px solid #e88c03;
+    }
+
+    .login-button {
+      width: 100%;
+    }
+
+    .title-container {
+      .app-name {
+        font-size: 27px;
+        margin-right: 6px;
+        color: #e88c03;
+        font-family: cursive;
+        font-weight: bold;
+      }
+    }
+  }
+}

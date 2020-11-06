@@ -1,0 +1,135 @@
+.wallet-home-container {
+  // max-width: 400px;
+  // margin: auto;
+  margin-left: 200px;
+  margin-right: 200px;
+  padding-top: 100px;
+
+  .wallet-home-btc-logo {
+    max-width: 120px;
+    margin: auto;
+
+    img {
+      max-width: 120px;
+    }
+  }
+
+  .wallet-balance-container {
+    text-align: center;
+    font-weight: bold;
+
+    .wallet-btc-balance {
+      color: #e88c03;
+      font-family: cursive;
+      font-size: 50px;
+
+      .ant-spin {
+        margin-left: 10px;
+
+        .ant-spin-dot-item {
+          background-color: #e88c03;
+        }
+      }
+    }
+
+    .wallet-usd-balance {
+      font-size: 20px;
+      font-family: monospace;
+    }
+  }
+
+  .wallet-button-container {
+    .ant-btn {
+      width: 100%;
+      border-color: #e88c03;
+      color: #e88c03;
+      max-width: 400px;
+    }
+
+    .wallet-send-button {
+      text-align: right;
+    }
+
+    .ant-btn:hover {
+      border-color: #e88c03;
+      background-color: black;
+    }
+  }
+}
+
+.send-receive-btc-modal {
+  width: 80% !important;
+
+  .ant-modal-content {
+    background-color: #1f1f1fcc;
+  }
+
+  .ant-modal-header {
+    text-align: center;
+    border-bottom-color: #e88c03;
+
+    .ant-modal-title {
+      color: #e88c03;
+    }
+  }
+
+  .ant-modal-body {
+    padding-top: 74px;
+  }
+
+  .send-btc-content {
+    max-width: 400px;
+    margin: auto;
+    div {
+      text-align: center;
+    }
+    .ant-input-number {
+      text-align: center;
+      color: #e88c03;
+      font-weight: bold;
+      width: 100%;
+    }
+    .ant-btn {
+      width: 100%;
+      border-color: #e88c03;
+      color: #e88c03;
+      max-width: 400px;
+    }
+    .send-btc-fee-container {
+      margin-top: 100px;
+    }
+    .ant-input:focus, .ant-input-focused {
+      border-color: #e88c03;
+    }
+    .ant-input-number:focus, .ant-input-number-focused {
+      border-color: #e88c03;
+    }
+  }
+
+  .receive-btc-content {
+    max-width: 400px;
+    margin: auto;
+
+    div {
+      text-align: center;
+    }
+
+    .ant-input {
+      text-align: center;
+      color: #e88c03;
+      font-weight: bold;
+    }
+
+    .receive-btc-text {
+      font-size: 20px;
+    }
+
+    .receive-btc-qrcode {
+      width: 210px;
+      margin: auto;
+      height: 210px;
+      background-color: #e88c03;
+      padding-top: 5px;
+    }
+  }
+}

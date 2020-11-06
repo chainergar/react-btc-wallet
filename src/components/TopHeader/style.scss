@@ -1,0 +1,23 @@
+.top-header {
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: right;
+
+  .avatar-container {
+    cursor: pointer;
+    .ant-avatar {
+      background-color: #e88c03;
+      margin-right: 6px;
+    }
+
+    .avatar-email-container {
+      font-size: 16px;
+      color: #e88c03;
+      font-weight: bold;
+    }
+  }
+}
+
+.ant-dropdown-menu {
+  margin-top: 10px;
+}

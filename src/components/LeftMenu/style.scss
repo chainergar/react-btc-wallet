@@ -1,0 +1,51 @@
+li.left-menu-alert {
+  width: 100%;
+  height: 50px;
+  padding-top: 15px;
+  font-size: 12px;
+  padding-left: 26px;
+
+  .left-menu-alert-target {
+    padding-top: 8.5px;
+  }
+
+  .left-menu-alert-target, .left-menu-alert-pair {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-right: 2px;
+  }
+
+  .left-menu-alert-pair {
+    padding-left: 0px;
+    color: rgb(23, 125, 220);
+    cursor: pointer;
+  }
+
+  .left-menu-alert-close {
+    color: red;
+    font-size: 17px;
+    cursor: pointer;
+  }
+}
+
+.left-menu-fav-price {
+  font-size: 11px;
+  padding-left: 6px;
+  float: right;
+}
+
+.favorites-menu .ant-menu.ant-menu-sub.ant-menu-inline {
+  max-height: 250px;
+  overflow-y: auto;
+
+  a {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .ant-menu-item.ant-menu-item-only-child {
+    padding-left: 26px !important;
+    padding-right: 8px;
+  }
+}
