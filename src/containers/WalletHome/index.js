@@ -5,6 +5,7 @@ import btcLogo from '../../assets/images/bitcoin_logo.png';
 import { setBtcBalance } from '../../redux/actions/wallet'
 import ReceiveModal from './ReceiveModal'
 import SendModal from './SendModal'
+import { getWalletInfoFromAddress } from '../../utils/wallet'
 import './style.scss';
 
 export class WalletHome extends Component {
@@ -23,24 +24,28 @@ export class WalletHome extends Component {
     }
   }
 
-  checkBtcBalance = (address) => () => {
+  checkBtcBalance = (address) => async () => {
     try {
       let pointer = this
       this.setState({loadingBalance: true})
-      window.coinjs.addressBalance(address, function(data) {
-        try {
-          pointer.setState({loadingBalance: false})
+      // window.coinjs.addressBalance(address, function(data) {
+      //   try {
+      //     pointer.setState({loadingBalance: false})
 
-          const parser = new DOMParser()
-          const xmlDoc = parser.parseFromString(data, 'text/xml')
-          const balance = parseFloat(xmlDoc.getElementsByTagName("balance")[0].childNodes[0].nodeValue)
-          pointer.props.setBtcBalance(balance)
+      //     const parser = new DOMParser()
+      //     const xmlDoc = parser.parseFromString(data, 'text/xml')
+      //     const balance = parseFloat(xmlDoc.getElementsByTagName("balance")[0].childNodes[0].nodeValue)
+      //     pointer.props.setBtcBalance(balance)
 
-          setTimeout(pointer.checkBtcBalance(address), 60000)
-        } catch(e) {
-          console.log(e)
-        }
-      })
+      //     setTimeout(pointer.checkBtcBalance(address), 60000)
+      //   } catch(e) {
+      //     console.log(e)
+      //   }
+      // })
+      const balanceData = await getWalletInfoFromAddress(address)
+      this.props.setBtcBalance(balanceData)
+      this.setState({loadingBalance: false})
+      setTimeout(pointer.checkBtcBalance(address), 120000)
     } catch(e) {
       console.log(e)
     }
@@ -63,7 +68,13 @@ export class WalletHome extends Component {
   }
 
   render() {
-    let {balance} = this.props
+    let {balanceData} = this.props
+    let balance = 0
+
+    try {
+      balance = balanceData.balance
+    } catch(e) {}
+
     balance = parseFloat(balance) / 100000000
     const { loadingBalance } = this.state
     const usdBalance = balance * 15501
@@ -83,10 +94,6 @@ export class WalletHome extends Component {
                 <Col span={24}>
                   <div className='wallet-btc-balance'>
                     <span>{balance.toFixed(8)} BTC</span>
-                    {
-                      loadingBalance &&
-                      <Spin size="large" />
-                    }
                   </div>
                 </Col>
 
@@ -129,7 +136,7 @@ export class WalletHome extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  balance: state.wallet.balance,
+  balanceData: state.wallet.balance,
   walletKeys: state.wallet.keys
 });
 

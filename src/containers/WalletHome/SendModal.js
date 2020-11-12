@@ -3,11 +3,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Row, Col, Input, InputNumber, Button } from 'antd';
+import { send } from '../../utils/wallet'
 import './style.scss';
 
 export class SendModal extends Component {
+  state = {
+    receipant: '',
+    amount: 0
+  }
+
+  onReceipantChange = e => {
+    this.setState({receipant: e.target.value})
+  }
+
+  onAmountChange = value => {
+    this.setState({amount: value})
+  }
+
+  onSendClick = () => {
+    console.log('onSendClick', this)
+    try {
+      const {receipant, amount} = this.state
+      const {walletKeys} = this.props
+      const pubkey = walletKeys.pubkey
+      const privkey = walletKeys.wif
+      const walletAddress = walletKeys.sw.address
+
+      send(receipant, amount, pubkey, privkey, walletAddress)
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
   render() {
     let address = ''
+    const {receipant, amount} = this.state
 
     try {
       address = this.props.walletKeys.sw.address
@@ -29,6 +59,8 @@ export class SendModal extends Component {
               <Input
                 placeholder='Send to BTC address...'
                 size='large'
+                value={receipant}
+                onChange={this.onReceipantChange}
               />
             </Col>
 
@@ -36,12 +68,13 @@ export class SendModal extends Component {
               <InputNumber
                 placeholder='BTC amount to send'
                 size='large'
-                defaultValue='0.00000000'
+                value={amount}
+                onChange={this.onAmountChange}
               />
             </Col>
 
             <Col span={24} className='send-btc-button-container'>
-              <Button shape='round' size='large'>
+              <Button shape='round' size='large' onClick={this.onSendClick}>
                 Send
               </Button>
             </Col>
@@ -52,13 +85,13 @@ export class SendModal extends Component {
                   Network Fee
                 </Col>
                 <Col span={12}>
-                  0.00004000
+                  0.00010000
                 </Col>
                 <Col span={12}>
                   Platform Fee
                 </Col>
                 <Col span={12}>
-                  0.00001000
+                  0.00010000
                 </Col>
               </Row>
             </Col>

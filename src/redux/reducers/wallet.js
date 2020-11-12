@@ -2,7 +2,9 @@ import { SET_WALLET_KEYS, SET_BTC_BALANCE } from '../actions/wallet';
 
 const initialState = {
   keys: {},
-  balance: 0
+  balance: {
+    balance: 0
+  }
 };
 
 const walletReducer = (previousState = initialState, action) => {
