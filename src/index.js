@@ -5,13 +5,16 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/store'
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Route path='/' component={App} />
+        {/* <Route exact path="/">
+          <Redirect to='/bitcoin' />
+        </Route> */}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

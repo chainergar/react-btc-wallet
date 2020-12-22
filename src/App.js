@@ -4,7 +4,7 @@ import './App.scss';
 import LeftMenu from './components/LeftMenu'
 import TopHeader from './components/TopHeader'
 import WalletHome from './containers/WalletHome'
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from './components/Login'
 
@@ -52,8 +52,10 @@ class App extends Component {
               <Content style={{ margin: '24px 16px 0' }}>
                 <div className="site-layout-background" style={{ padding: 24 }}>
                   <Switch>
-                    <Route path="/" component={WalletHome} exact />
-                    <Route path="/pair-explorer/:address" component={WalletHome} exact />
+                    {/* <Route exact path="/">
+                      <Redirect to="/liberdus" />
+                    </Route> */}
+                    <Route path="/bitcoin" component={WalletHome} exact />
                   </Switch>
                 </div>
               </Content>
