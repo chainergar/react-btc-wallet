@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, Card, Row, Col, Button, Alert } from 'antd';
 import { MailOutlined, KeyOutlined } from '@ant-design/icons';
-import { getWalletInfo } from '../../utils/wallet'
-import { setWalletKeys } from '../../redux/actions/wallet'
-import { setAuth, setEmail } from '../../redux/actions/auth'
+import { getWalletInfo } from '../../utils/wallet';
+import { setWalletKeys } from '../../redux/actions/wallet';
+import { setAuth, setEmail } from '../../redux/actions/auth';
 import './style.scss';
 
 export class Login extends Component {
@@ -12,7 +12,7 @@ export class Login extends Component {
     email: '',
     password: '',
     passwordConfirm: '',
-    errorMessage: ''
+    errorMessage: '',
   };
 
   _inputChange = (e) => {
@@ -22,58 +22,65 @@ export class Login extends Component {
   };
 
   onLogInClick = () => {
-    const {email, password, passwordConfirm} = this.state
+    const { email, password, passwordConfirm } = this.state;
 
     if (email.length === 0 || password.length === 0 || passwordConfirm === 0) {
       this.setState({
-        errorMessage: 'Input all the fields exactly.'
-      })
+        errorMessage: 'Input all the fields exactly.',
+      });
       return;
     }
-    
+
     if (!email.match(/[\s\w\d]+@[\s\w\d]+/g)) {
       this.setState({
-        errorMessage: 'Email should be valid.'
-      })
+        errorMessage: 'Email should be valid.',
+      });
       return;
-    } 
-    
+    }
+
     if (password.length < 10) {
       this.setState({
-        errorMessage: 'Password should be longer than 10 letters.'
-      })
+        errorMessage: 'Password should be longer than 10 letters.',
+      });
       return;
     }
-    
+
     if (password !== passwordConfirm) {
       this.setState({
-        errorMessage: 'Password should match to the confirm password.'
-      })
+        errorMessage: 'Password should match to the confirm password.',
+      });
       return;
     }
-  
-    this.setState({
-      errorMessage: ''
-    })
 
-    const walletInfo = getWalletInfo(email, password)
+    this.setState({
+      errorMessage: '',
+    });
+
+    const walletInfo = getWalletInfo(email, password);
 
     if (walletInfo.address && walletInfo.sw.address) {
-      this.props.setWalletKeys(walletInfo)
-      this.props.setAuth(true)
-      this.props.setEmail(email)
+      this.props.setWalletKeys(walletInfo);
+      this.props.setAuth(true);
+      this.props.setEmail(email);
+      localStorage.setItem(
+        'bitcoinInfo',
+        JSON.stringify({
+          email,
+          password,
+          updatedAt: Date.now()
+        })
+      );
     }
-  }
+  };
 
   render() {
     const { email, password, passwordConfirm, errorMessage } = this.state;
-    console.log('\n\n === Login Container === \n\n', this, window.coinjs.priv);
 
     const titleContainer = (
       <div className='title-container'>
         <span className='app-name'>BTCWallet</span>
       </div>
-    )
+    );
 
     return (
       <div className='login-container'>
@@ -112,21 +119,29 @@ export class Login extends Component {
               />
             </Col>
 
-            {
-              errorMessage && errorMessage.length > 0 ?
+            {errorMessage && errorMessage.length > 0 ? (
               <Col span={24}>
-                <Alert 
+                <Alert
                   message={errorMessage}
-                  type="warning"
+                  type='warning'
                   showIcon
                   closable
                 />
-              </Col> :
+              </Col>
+            ) : (
               <span />
-            }
+            )}
 
             <Col span={24}>
-              <Button size="large" type="primary" shape="round" onClick={this.onLogInClick} className="login-button">Log In</Button>
+              <Button
+                size='large'
+                type='primary'
+                shape='round'
+                onClick={this.onLogInClick}
+                className='login-button'
+              >
+                Log In
+              </Button>
             </Col>
           </Row>
         </Card>
@@ -136,7 +151,7 @@ export class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  walletKeys: state.wallet.keys
+  walletKeys: state.wallet.keys,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -148,7 +163,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setEmail(arg) {
     dispatch(setEmail(arg));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

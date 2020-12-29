@@ -44,6 +44,7 @@ class TopHeader extends Component {
 
   onSignOut = () => {
     this.initialize()
+    window.location.href="https://app.coinica.org/"
   }
 
   render() {

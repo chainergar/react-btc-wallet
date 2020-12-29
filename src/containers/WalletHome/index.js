@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Table } from 'antd';
 import btcLogo from '../../assets/images/bitcoin_logo.png';
 import { setBtcBalance } from '../../redux/actions/wallet'
 import ReceiveModal from './ReceiveModal'
 import SendModal from './SendModal'
 import { getWalletInfoFromAddress } from '../../utils/wallet'
+import axios from 'axios'
 import './style.scss';
 
 export class WalletHome extends Component {
@@ -13,12 +14,19 @@ export class WalletHome extends Component {
     showReceive: false,
     showSend: false,
     loadingBalance: false,
+    txList: []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     try {
       const address = this.props.walletKeys.sw.address
       this.checkBtcBalance(address)();
+
+      const res = await axios.get(
+        `https://api.blockcypher.com/v1/btc/main/addrs/${address}`
+      )
+      console.log('tx response', res)
+      this.setState({txList: res.data.txrefs})
     } catch(e) {
       console.log(e)
     }
@@ -77,7 +85,41 @@ export class WalletHome extends Component {
 
     balance = parseFloat(balance) / 100000000
     const { loadingBalance } = this.state
-    const usdBalance = balance * 15501
+    const usdBalance = balance * 16705.8
+
+    const columns = [
+      {
+        title: 'Tx Hash',
+        dataIndex: 'tx_hash',
+        key: 'tx_hash',
+      },
+      // {
+      //   title: 'Input/Output',
+      //   dataIndex: 'tx_inout',
+      //   key: 'tx_inout',
+      //   render(text, record, index) {
+
+      //   }
+      // },
+      {
+        title: 'Confirmations',
+        dataIndex: 'confirmations',
+        key: 'confirmations',
+      },
+      {
+        title: 'Confirmed date',
+        dataIndex: 'confirmed',
+        key: 'confirmed',
+      },
+      {
+        title: 'Amount',
+        dataIndex: 'ref_balance',
+        key: 'amount',
+        render(text) {
+          return parseFloat(text) / 100000000
+        }
+      }
+    ];
 
     return (
       <div className='wallet-home-container'>
@@ -117,6 +159,10 @@ export class WalletHome extends Component {
                   </Button>
                 </Col>
               </Row>
+            </Col>
+
+            <Col span={24}>
+              <Table dataSource={this.state.txList} columns={columns} />
             </Col>
           </Row>
         </div>
