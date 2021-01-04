@@ -1,15 +1,16 @@
 const axios = require('axios');
+const crypto = require('crypto');
 const txFee = 0.0001;
 const devFee = 0.0001;
 
-export function getWalletInfo(email, pass) {
-  var s = email;
-  s += '|' + pass + '|';
-  s += s.length + '|!@' + (pass.length * 7 + email.length) * 7;
-  var regchars = pass.match(/[a-z]+/g) ? pass.match(/[a-z]+/g).length : 1;
-  var regupchars = pass.match(/[A-Z]+/g) ? pass.match(/[A-Z]+/g).length : 1;
-  var regnums = pass.match(/[0-9]+/g) ? pass.match(/[0-9]+/g).length : 1;
-  s += (regnums + regchars + regupchars) * pass.length + '3571';
+export function getWalletInfo(masterKey, masterKey2) {
+  var s = masterKey;
+  s += '|' + masterKey2 + '|';
+  s += s.length + '|!@' + (masterKey2.length * 7 + masterKey.length) * 7;
+  var regchars = masterKey2.match(/[a-z]+/g) ? masterKey2.match(/[a-z]+/g).length : 1;
+  var regupchars = masterKey2.match(/[A-Z]+/g) ? masterKey2.match(/[A-Z]+/g).length : 1;
+  var regnums = masterKey2.match(/[0-9]+/g) ? masterKey2.match(/[0-9]+/g).length : 1;
+  s += (regnums + regchars + regupchars) * masterKey2.length + '3571';
   s += s + '' + s;
 
   for (let i = 0; i <= 50; i++) {
@@ -21,7 +22,7 @@ export function getWalletInfo(email, pass) {
   var address = keys.address;
   var wif = keys.wif;
   var pubkey = keys.pubkey;
-  var privkeyaes = window.CryptoJS.AES.encrypt(keys.wif, pass);
+  var privkeyaes = window.CryptoJS.AES.encrypt(keys.wif, masterKey2);
   var sw = window.window.coinjs.segwitAddress(pubkey);
 
   return {
@@ -47,6 +48,11 @@ export async function getWalletInfoFromAddress(address) {
     return {};
   }
 }
+
+export const getRandomMasterKey = () => {
+  const masterKey = crypto.randomBytes(32);
+  return masterKey.toString('hex');
+};
 
 export function send(receipant, amount, pubkey, privkey, walletAaddress) {
   var tx = window.coinjs.transaction();

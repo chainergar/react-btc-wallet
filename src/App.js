@@ -4,75 +4,77 @@ import './App.scss';
 import LeftMenu from './components/LeftMenu';
 import TopHeader from './components/TopHeader';
 import WalletHome from './containers/WalletHome';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from './components/Login';
-import { getWalletInfo } from './utils/wallet';
+import { getWalletInfo, getRandomMasterKey } from './utils/wallet';
 import { setWalletKeys } from './redux/actions/wallet';
-import { setAuth, setEmail } from './redux/actions/auth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function mapStateToProps(state) {
-  return {
-    auth: state.auth.auth,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  setWalletKeys(arg) {
-    dispatch(setWalletKeys(arg));
-  },
-  setAuth(arg) {
-    dispatch(setAuth(arg));
-  },
-  setEmail(arg) {
-    dispatch(setEmail(arg));
-  },
-});
-
 class App extends Component {
-  state = {};
+  constructor(props) {
+    super(props)
+    try {
+      let bitcoinInfo = localStorage.getItem('bitcoinInfo');
+      bitcoinInfo = JSON.parse(bitcoinInfo);
+      console.log('bitcoinInfo on constructor: \n', bitcoinInfo)
 
-  componentDidMount() {
-    let { auth } = this.props;
-    if (!auth) {
-      let authByCoinica = localStorage.getItem('authByCoinica')
-      try {
-        let bitcoinInfo = localStorage.getItem('bitcoinInfo');
-        if (bitcoinInfo) {
-          bitcoinInfo = JSON.parse(bitcoinInfo);
-          if (
-            bitcoinInfo.email &&
-            bitcoinInfo.password &&
-            bitcoinInfo.password.length >= 10
-          ) {
-            const walletInfo = getWalletInfo(
-              bitcoinInfo.email,
-              bitcoinInfo.password
-            );
-            this.props.setWalletKeys(walletInfo);
-            this.props.setAuth(true);
-            this.props.setEmail(bitcoinInfo.email);
-            auth = true;
-            localStorage.removeItem('bitcoinInfo');
-            localStorage.setItem('authByCoinica', 'true');
-          }
-        } else if (authByCoinica === 'true') {
-          localStorage.removeItem('authByCoinica')
-          window.location.href="https://app.coinica.org/"
+      if (bitcoinInfo && bitcoinInfo.masterKey && bitcoinInfo.masterKey2) {
+        const walletInfo = getWalletInfo(
+          bitcoinInfo.masterKey,
+          bitcoinInfo.masterKey2
+        );
+
+        props.setWalletKeys(walletInfo);
+      } else {
+        const masterKey = getRandomMasterKey();
+        const masterKey2 = getRandomMasterKey();
+        const walletInfo = getWalletInfo(
+          masterKey,
+          masterKey2
+        );
+
+        props.setWalletKeys(walletInfo);
+        const bitcoinInfo = {
+          masterKey,
+          masterKey2,
+          updatedAt: Date.now()
         }
-      } catch (e) {
-        console.log(e);
+        localStorage.setItem('bitcoinInfo', JSON.stringify(bitcoinInfo))
       }
+    } catch (e) {
+      console.log(e);
     }
   }
 
+  componentDidMount() {
+    // let { auth } = this.props;
+    // if (!auth) {
+    //   try {
+    //     let bitcoinInfo = localStorage.getItem('bitcoinInfo');
+    //     bitcoinInfo = JSON.parse(bitcoinInfo);
+    //     if (bitcoinInfo && bitcoinInfo.masterKey && bitcoinInfo.masterKey2) {
+    //       const walletInfo = getWalletInfo(
+    //         bitcoinInfo.masterKey,
+    //         bitcoinInfo.masterKey2
+    //       );
+    //       this.props.setWalletKeys(walletInfo);
+    //       this.props.setAuth(true);
+    //       auth = true;
+    //       localStorage.removeItem('bitcoinInfo');
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
+  }
+
   render() {
-    let { auth } = this.props;
+    // let { auth } = this.props;
     return (
       <div className='App'>
-        {auth ? (
+        {/* {auth ? ( */}
           <Layout id='components-layout-demo-responsive'>
             <Sider
               breakpoint='lg'
@@ -113,14 +115,26 @@ class App extends Component {
               </Footer>
             </Layout>
           </Layout>
-        ) : (
+        {/* ) : (
           <Layout>
             <Login />
           </Layout>
-        )}
+        )} */}
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    auth: state.auth.auth,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  setWalletKeys(arg) {
+    dispatch(setWalletKeys(arg));
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
