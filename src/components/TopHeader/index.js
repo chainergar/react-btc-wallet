@@ -8,7 +8,6 @@ import './style.scss';
 
 function mapStateToProps(state) {
   return {
-    email: state.auth.email
   };
 }
 
@@ -18,9 +17,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setAuth(arg) {
     dispatch(setAuth(arg));
-  },
-  setEmail(arg) {
-    dispatch(setEmail(arg));
   },
   setBtcBalance(arg) {
     dispatch(setBtcBalance(arg));
@@ -38,12 +34,11 @@ class TopHeader extends Component {
   initialize() {
     this.props.setWalletKeys({})
     this.props.setAuth(false)
-    this.props.setEmail(null)
     this.props.setBtcBalance(0)
   }
 
   onSignOut = () => {
-    this.initialize()
+    // this.initialize()
     window.location.href="https://app.coinica.org/"
   }
 
