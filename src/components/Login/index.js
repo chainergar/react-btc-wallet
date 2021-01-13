@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, Card, Row, Col, Button, Alert } from 'antd';
 import { MailOutlined, KeyOutlined } from '@ant-design/icons';
-import { getWalletInfo } from '../../utils/wallet';
+import { getWalletInfo, setLocalStoreItem } from '../../utils';
 import { setWalletKeys } from '../../redux/actions/wallet';
 import { setAuth, setEmail } from '../../redux/actions/auth';
 import './style.scss';
@@ -62,14 +62,21 @@ export class Login extends Component {
       this.props.setWalletKeys(walletInfo);
       this.props.setAuth(true);
       this.props.setEmail(email);
-      localStorage.setItem(
-        'bitcoinInfo',
-        JSON.stringify({
+      // localStorage.setItem(
+      //   'bitcoinInfo',
+      //   JSON.stringify({
+      //     email,
+      //     password,
+      //     updatedAt: Date.now()
+      //   })
+      // );
+      setLocalStoreItem('coinica-bitcoin',
+        {
           email,
           password,
           updatedAt: Date.now()
-        })
-      );
+        }
+      )
     }
   };
 

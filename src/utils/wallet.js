@@ -49,11 +49,6 @@ export async function getWalletInfoFromAddress(address) {
   }
 }
 
-export const getRandomMasterKey = () => {
-  const masterKey = crypto.randomBytes(32);
-  return masterKey.toString('hex');
-};
-
 export function send(receipant, amount, pubkey, privkey, walletAaddress) {
   var tx = window.coinjs.transaction();
   var devaddr = window.coinjs.developer;
