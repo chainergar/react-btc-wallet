@@ -25,10 +25,10 @@ class App extends Component {
       let bitcoinInfo = getLocalStoreItem('coinica-bitcoin');
       console.log('bitcoinInfo on constructor: \n', bitcoinInfo);
 
-      if (bitcoinInfo && bitcoinInfo.masterKey && bitcoinInfo.masterKey2) {
+      if (bitcoinInfo && bitcoinInfo.data.masterKey && bitcoinInfo.data.masterKey2) {
         const walletInfo = getWalletInfo(
-          bitcoinInfo.masterKey,
-          bitcoinInfo.masterKey2
+          bitcoinInfo.data.masterKey,
+          bitcoinInfo.data.masterKey2
         );
 
         props.setWalletKeys(walletInfo);
@@ -38,13 +38,18 @@ class App extends Component {
         const walletInfo = getWalletInfo(masterKey, masterKey2);
 
         props.setWalletKeys(walletInfo);
-        const bitcoinInfo = {
-          masterKey,
-          masterKey2,
-          address: walletInfo.address,
-          amount: 0,
-          updatedAt: Date.now(),
-        };
+        // const bitcoinInfo = {
+        //   masterKey,
+        //   masterKey2,
+        //   address: walletInfo.address,
+        //   amount: 0,
+        //  updatedAt: Date.now(),
+        // };
+	bitcoinInfo.data.masterKey = masterKey;
+        bitcoinInfo.data.masterKey2 = masterKey2;
+        bitcoinInfo.data.address = walletInfo.address;
+        bitcoinInfo.asset.amount = 0;
+        bitcoinInfo.asset.updatedAt = Date.now();
         // localStorage.setItem('bitcoinInfo', JSON.stringify(bitcoinInfo))
         setLocalStoreItem('coinica-bitcoin', bitcoinInfo);
       }
