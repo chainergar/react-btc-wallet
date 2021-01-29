@@ -39,7 +39,7 @@ export async function getWalletInfoFromAddress(address) {
     const res = await axios.get(
       `https://blockchain.info/q/addressbalance/${address}`
     );
-    console.log('\n\n === response === \n\n', res);
+    // console.log('\n\n === response === \n\n', res);
     return {
       balance: res.data,
     };

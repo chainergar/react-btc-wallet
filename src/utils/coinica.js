@@ -63,6 +63,15 @@ export const getLocalStoreItem = (name) => {
 
 export const setLocalStoreItem = (name, data) => {
   try {
+    console.log('setLocalStoreItem: \n', name, data)
+    const beforeData = getLocalStoreItem(name)
+    console.log('beforeData: \n', beforeData)
+    
+    data = {
+      ...beforeData,
+      ...data
+    }
+
     const hashKey = getCookie(name)
     const encryptedData = encrypt(
       JSON.stringify(data), hashKey

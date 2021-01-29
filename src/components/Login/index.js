@@ -91,67 +91,67 @@ export class Login extends Component {
 
     return (
       <div className='login-container'>
-        <Card title={titleContainer}>
-          <Row gutter={[0, 20]}>
-            <Col span={24}>
-              <Input
-                size='large'
-                placeholder='Input email'
-                name='email'
-                prefix={<MailOutlined />}
-                value={email}
-                onChange={this._inputChange}
-              />
-            </Col>
+            <Card title={titleContainer}>
+              <Row gutter={[0, 20]}>
+                <Col span={24}>
+                  <Input
+                    size='large'
+                    placeholder='Input email'
+                    name='email'
+                    prefix={<MailOutlined />}
+                    value={email}
+                    onChange={this._inputChange}
+                  />
+                </Col>
 
-            <Col span={24}>
-              <Input.Password
-                size='large'
-                placeholder='Input password'
-                name='password'
-                prefix={<KeyOutlined />}
-                value={password}
-                onChange={this._inputChange}
-              />
-            </Col>
+                <Col span={24}>
+                  <Input.Password
+                    size='large'
+                    placeholder='Input password'
+                    name='password'
+                    prefix={<KeyOutlined />}
+                    value={password}
+                    onChange={this._inputChange}
+                  />
+                </Col>
 
-            <Col span={24}>
-              <Input.Password
-                size='large'
-                placeholder='Input password again'
-                name='passwordConfirm'
-                prefix={<KeyOutlined />}
-                value={passwordConfirm}
-                onChange={this._inputChange}
-              />
-            </Col>
+                <Col span={24}>
+                  <Input.Password
+                    size='large'
+                    placeholder='Input password again'
+                    name='passwordConfirm'
+                    prefix={<KeyOutlined />}
+                    value={passwordConfirm}
+                    onChange={this._inputChange}
+                  />
+                </Col>
 
-            {errorMessage && errorMessage.length > 0 ? (
-              <Col span={24}>
-                <Alert
-                  message={errorMessage}
-                  type='warning'
-                  showIcon
-                  closable
-                />
-              </Col>
-            ) : (
-              <span />
-            )}
+                {errorMessage && errorMessage.length > 0 ? (
+                  <Col span={24}>
+                    <Alert
+                      message={errorMessage}
+                      type='warning'
+                      showIcon
+                      closable
+                    />
+                  </Col>
+                ) : (
+                  <span />
+                )}
 
-            <Col span={24}>
-              <Button
-                size='large'
-                type='primary'
-                shape='round'
-                onClick={this.onLogInClick}
-                className='login-button'
-              >
-                Log In
-              </Button>
-            </Col>
-          </Row>
-        </Card>
+                <Col span={24}>
+                  <Button
+                    size='large'
+                    type='primary'
+                    shape='round'
+                    onClick={this.onLogInClick}
+                    className='login-button'
+                  >
+                    Log In
+                  </Button>
+                </Col>
+              </Row>
+            </Card>
       </div>
     );
   }

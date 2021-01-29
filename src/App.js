@@ -41,6 +41,8 @@ class App extends Component {
         const bitcoinInfo = {
           masterKey,
           masterKey2,
+          address: walletInfo.address,
+          amount: 0,
           updatedAt: Date.now(),
         };
         // localStorage.setItem('bitcoinInfo', JSON.stringify(bitcoinInfo))
@@ -58,12 +60,6 @@ class App extends Component {
           <Sider
             breakpoint='lg'
             collapsedWidth='0'
-            onBreakpoint={(broken) => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
             width={250}
           >
             <div className='logo'>BTCWallet</div>
