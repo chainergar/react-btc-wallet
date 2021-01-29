@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Layout } from 'antd';
-import './App.scss';
-import LeftMenu from './components/LeftMenu';
-import TopHeader from './components/TopHeader';
-import WalletHome from './containers/WalletHome';
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Login from './components/Login';
+import React, { Component } from "react";
+import { Layout } from "antd";
+import "./App.scss";
+import LeftMenu from "./components/LeftMenu";
+import TopHeader from "./components/TopHeader";
+import WalletHome from "./containers/WalletHome";
+import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import Login from "./components/Login";
 import {
   getLocalStoreItem,
   setLocalStoreItem,
   getWalletInfo,
   getRandomMasterKey,
-} from './utils';
-import { setWalletKeys } from './redux/actions/wallet';
+} from "./utils";
+import { setWalletKeys } from "./redux/actions/wallet";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,13 +22,17 @@ class App extends Component {
     super(props);
     try {
       // let bitcoinInfo = localStorage.getItem('coinica-bitcoin');
-      let bitcoinInfo = getLocalStoreItem('coinica-bitcoin');
-      console.log('bitcoinInfo on constructor: \n', bitcoinInfo);
+      let bitcoinInfo = getLocalStoreItem("coinica-bitcoin");
+      console.log("bitcoinInfo on constructor: \n", bitcoinInfo);
 
-      if (bitcoinInfo && bitcoinInfo.masterKey && bitcoinInfo.masterKey2) {
+      if (
+        bitcoinInfo &&
+        bitcoinInfo.data.masterKey &&
+        bitcoinInfo.data.masterKey2
+      ) {
         const walletInfo = getWalletInfo(
-          bitcoinInfo.masterKey,
-          bitcoinInfo.masterKey2
+          bitcoinInfo.data.masterKey,
+          bitcoinInfo.data.masterKey2
         );
 
         props.setWalletKeys(walletInfo);
@@ -38,15 +42,20 @@ class App extends Component {
         const walletInfo = getWalletInfo(masterKey, masterKey2);
 
         props.setWalletKeys(walletInfo);
-        const bitcoinInfo = {
-          masterKey,
-          masterKey2,
-          address: walletInfo.address,
-          amount: 0,
-          updatedAt: Date.now(),
-        };
+        // const bitcoinInfo = {
+        //   masterKey,
+        //   masterKey2,
+        //   address: walletInfo.address,
+        //   amount: 0,
+        //   updatedAt: Date.now(),
+        // };
+        bitcoinInfo.data.masterKey = masterKey;
+        bitcoinInfo.data.masterKey2 = masterKey2;
+        bitcoinInfo.data.address = walletInfo.address;
+        bitcoinInfo.asset.amount = 0;
+        bitcoinInfo.asset.updatedAt = Date.now();
         // localStorage.setItem('bitcoinInfo', JSON.stringify(bitcoinInfo))
-        setLocalStoreItem('coinica-bitcoin', bitcoinInfo);
+        setLocalStoreItem("coinica-bitcoin", bitcoinInfo);
       }
     } catch (e) {
       console.log(e);
@@ -55,37 +64,33 @@ class App extends Component {
 
   render() {
     return (
-      <div className='App'>
-        <Layout id='components-layout-demo-responsive'>
-          <Sider
-            breakpoint='lg'
-            collapsedWidth='0'
-            width={250}
-          >
-            <div className='logo'>BTCWallet</div>
+      <div className="App">
+        <Layout id="components-layout-demo-responsive">
+          <Sider breakpoint="lg" collapsedWidth="0" width={250}>
+            <div className="logo">BTCWallet</div>
 
-            <div className='left-menu-wrapper'>
+            <div className="left-menu-wrapper">
               <LeftMenu />
             </div>
           </Sider>
 
-          <Layout className='right-layout'>
+          <Layout className="right-layout">
             <Header
-              className='site-layout-sub-header-background'
+              className="site-layout-sub-header-background"
               style={{ padding: 0 }}
             >
               <TopHeader />
             </Header>
 
-            <Content style={{ margin: '24px 16px 0' }}>
-              <div className='site-layout-background' style={{ padding: 24 }}>
+            <Content style={{ margin: "24px 16px 0" }}>
+              <div className="site-layout-background" style={{ padding: 24 }}>
                 <Switch>
-                  <Route path='/' component={WalletHome} exact />
+                  <Route path="/" component={WalletHome} exact />
                 </Switch>
               </div>
             </Content>
 
-            <Footer style={{ textAlign: 'center' }}>
+            <Footer style={{ textAlign: "center" }}>
               BTCWallet @2020 Created by Shardus team
             </Footer>
           </Layout>
